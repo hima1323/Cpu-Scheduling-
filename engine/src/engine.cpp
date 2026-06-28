@@ -31,9 +31,6 @@ SimulationResult runSimulation(
     int    ctx_sw    = 0;
     double busy_time = 0.0;
 
-    bool   is_rr  = (dynamic_cast<RoundRobin*>(sched) != nullptr);
-    double quantum = is_rr ? dynamic_cast<RoundRobin*>(sched)->quantum() : cfg.time_quantum;
-
     // Helper: open a new gantt entry and schedule burst-complete
     auto startProcess = [&](PCB* p) {
         running  = p;
@@ -46,9 +43,9 @@ SimulationResult runSimulation(
         ge.start = clock; ge.end = -1; ge.cpu_id = 0;
         result.gantt.push_back(ge);
 
-        double run_for = is_rr
-            ? std::min(quantum, p->remaining_time)
-            : p->remaining_time;
+        double q = sched->getQuantum(p);
+        double run_for = (q > 0) ? std::min(q, p->remaining_time) : p->remaining_time;
+        
         evq.push({clock + run_for, EventType::BURST_COMPLETE, p->pid});
     };
 
@@ -125,8 +122,9 @@ SimulationResult runSimulation(
                 if (p->waiting_time < 0) p->waiting_time = 0;
                 p->state = ProcessState::TERMINATED;
             } else {
-                // RR quantum expired
+                // RR/MLFQ quantum expired
                 p->state = ProcessState::READY;
+                sched->quantumExpired(p);
                 sched->enqueue(p);
             }
 

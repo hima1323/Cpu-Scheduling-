@@ -4,6 +4,10 @@
 #include "sjf.h"
 #include "priority.h"
 #include "rr.h"
+#include "mlq.h"
+#include "mlfq.h"
+#include "lottery.h"
+#include "edf.h"
 #include "generators.h"
 #include "../vendor/json.hpp"
 #include "../vendor/httplib.h"
@@ -46,6 +50,8 @@ json resultToJson(const SimulationResult& r, const std::string& algo) {
             {"arrival_time",   p.arrival_time},
             {"burst_time",     p.burst_time},
             {"priority",       p.priority},
+            {"deadline",       p.deadline},
+            {"tickets",        p.tickets},
             {"finish_time",    p.finish_time},
             {"waiting_time",   p.waiting_time},
             {"turnaround_time",p.turnaround_time}
@@ -64,7 +70,9 @@ std::vector<PCB> parseProcesses(const json& body) {
         double arrive  = item.value("arrival_time", 0.0);
         double burst   = item.value("burst_time", 1.0);
         int    prio    = item.value("priority", 0);
-        procs.emplace_back(pid, nm, arrive, burst, prio);
+        double deadline = item.value("deadline", 100.0);
+        int    tickets  = item.value("tickets", 10);
+        procs.emplace_back(pid, nm, arrive, burst, prio, deadline, tickets);
     }
     return procs;
 }
@@ -76,6 +84,10 @@ std::unique_ptr<Scheduler> makeScheduler(const std::string& algo, double q) {
     if (algo == "SRTF")     return std::make_unique<SRTF>();
     if (algo == "Priority") return std::make_unique<PriorityScheduler>();
     if (algo == "RR")       return std::make_unique<RoundRobin>(q);
+    if (algo == "MLQ")      return std::make_unique<MultilevelQueue>();
+    if (algo == "MLFQ")     return std::make_unique<MultilevelFeedbackQueue>();
+    if (algo == "Lottery")  return std::make_unique<LotteryScheduler>(q);
+    if (algo == "EDF")      return std::make_unique<EarliestDeadlineFirst>();
     throw std::invalid_argument("Unknown algorithm: " + algo);
 }
 
@@ -157,7 +169,7 @@ int main() {
             cfg.context_switch_cost = ctx;
             cfg.time_quantum        = q;
 
-            std::vector<std::string> algos = {"FCFS", "SJF", "SRTF", "Priority", "RR"};
+            std::vector<std::string> algos = {"FCFS", "SJF", "SRTF", "Priority", "RR", "MLQ", "MLFQ", "Lottery", "EDF"};
             json results = json::array();
             for (auto& algo : algos) {
                 auto sched  = makeScheduler(algo, q);

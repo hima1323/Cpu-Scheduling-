@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH=$PATH:/opt/homebrew/bin:/usr/local/bin
 # SchedSim — Start both the C++ engine and React dashboard
 
 set -e

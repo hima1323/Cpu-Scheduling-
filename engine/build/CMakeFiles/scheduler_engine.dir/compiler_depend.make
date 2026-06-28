@@ -1201,11 +1201,15 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: /Users/prince_13/Documents/job\ 
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/vendor/httplib.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/vendor/json.hpp \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/edf.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/engine.cpp \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/engine.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/event.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/fcfs.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/generators.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/lottery.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/mlfq.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/mlq.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/pcb.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/priority.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/rr.h \
@@ -1349,6 +1353,8 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: /Users/prince_13/Documents/job\ 
 /opt/homebrew/Cellar/openssl@3/3.6.2/include/openssl/asn1err.h:
 
 /Users/prince_13/Documents/job\ \ schedler/engine/src/scheduler.h:
+
+/Users/prince_13/Documents/job\ \ schedler/engine/src/mlq.h:
 
 /Users/prince_13/Documents/job\ \ schedler/engine/src/generators.h:
 
@@ -2258,6 +2264,8 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: /Users/prince_13/Documents/job\ 
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__stop_token/atomic_unique_lock.h:
 
+/Users/prince_13/Documents/job\ \ schedler/engine/src/mlfq.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/random:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__math/inverse_hyperbolic_functions.h:
@@ -2910,6 +2918,8 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: /Users/prince_13/Documents/job\ 
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__type_traits/remove_all_extents.h:
 
+/Users/prince_13/Documents/job\ \ schedler/engine/src/lottery.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/variant:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__functional/binder2nd.h:
@@ -3203,6 +3213,8 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: /Users/prince_13/Documents/job\ 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUtilities.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__system_error/system_error.h:
+
+/Users/prince_13/Documents/job\ \ schedler/engine/src/edf.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__ranges/view_interface.h:
 

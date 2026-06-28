@@ -39,4 +39,10 @@ public:
     virtual bool shouldPreempt(PCB* running, PCB* arrived) const { return false; }
     virtual std::string name() const = 0;
     virtual bool isEmpty() const = 0;
+    
+    // Return time quantum for this process. Return -1 to run until completion.
+    virtual double getQuantum(PCB* p) const { return -1.0; }
+    
+    // Called when a process's quantum expires
+    virtual void quantumExpired(PCB* p) {}
 };

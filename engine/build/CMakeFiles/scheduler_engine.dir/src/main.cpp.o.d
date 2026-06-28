@@ -790,7 +790,9 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/fcfs.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/sjf.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/priority.h \
-  /Users/prince_13/Documents/job\ \ schedler/engine/src/generators.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/mlq.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/mlfq.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/lottery.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/random \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__random/bernoulli_distribution.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__random/uniform_real_distribution.h \
@@ -841,6 +843,8 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__random/student_t_distribution.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__random/uniform_random_bit_generator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/__random/weibull_distribution.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/edf.h \
+  /Users/prince_13/Documents/job\ \ schedler/engine/src/generators.h \
   /Users/prince_13/Documents/job\ \ schedler/engine/src/../vendor/json.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/forward_list \
   /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include/c++/v1/valarray \

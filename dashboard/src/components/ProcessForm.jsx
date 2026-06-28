@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Plus, Trash2, Play, Zap, Shuffle } from 'lucide-react';
 
 const DEFAULT_PROCESSES = [
-  { pid: 0, name: 'Alpha',   arrival_time: 0, burst_time: 10, priority: 3 },
-  { pid: 1, name: 'Beta',    arrival_time: 2, burst_time:  6, priority: 1 },
-  { pid: 2, name: 'Gamma',   arrival_time: 4, burst_time:  2, priority: 2 },
-  { pid: 3, name: 'Delta',   arrival_time: 6, burst_time:  4, priority: 0 },
-  { pid: 4, name: 'Epsilon', arrival_time: 8, burst_time:  8, priority: 2 },
+  { pid: 0, name: 'Alpha',   arrival_time: 0, burst_time: 10, priority: 3, deadline: 20, tickets: 30 },
+  { pid: 1, name: 'Beta',    arrival_time: 2, burst_time:  6, priority: 1, deadline: 15, tickets: 10 },
+  { pid: 2, name: 'Gamma',   arrival_time: 4, burst_time:  2, priority: 2, deadline: 10, tickets: 20 },
+  { pid: 3, name: 'Delta',   arrival_time: 6, burst_time:  4, priority: 0, deadline: 12, tickets: 50 },
+  { pid: 4, name: 'Epsilon', arrival_time: 8, burst_time:  8, priority: 2, deadline: 25, tickets: 10 },
 ];
 
-const ALGORITHMS = ['FCFS', 'SJF', 'SRTF', 'Priority', 'RR'];
+const ALGORITHMS = ['FCFS', 'SJF', 'SRTF', 'Priority', 'RR', 'MLQ', 'MLFQ', 'Lottery', 'EDF'];
 
 export default function ProcessForm({ onRun, onArena, onGenerate, loading }) {
   const [processes, setProcesses] = useState(DEFAULT_PROCESSES);
@@ -25,7 +25,7 @@ export default function ProcessForm({ onRun, onArena, onGenerate, loading }) {
   const addRow = () =>
     setProcesses(prev => [
       ...prev,
-      { pid: prev.length, name: `P${prev.length}`, arrival_time: 0, burst_time: 5, priority: 0 }
+      { pid: prev.length, name: `P${prev.length}`, arrival_time: 0, burst_time: 5, priority: 0, deadline: 50, tickets: 10 }
     ]);
 
   const removeRow = idx =>
@@ -68,6 +68,8 @@ export default function ProcessForm({ onRun, onArena, onGenerate, loading }) {
               <th className="py-3 px-4 text-left">Arrival</th>
               <th className="py-3 px-4 text-left">Burst</th>
               <th className="py-3 px-4 text-left">Priority</th>
+              <th className="py-3 px-4 text-left">Deadline</th>
+              <th className="py-3 px-4 text-left">Tickets</th>
               <th className="py-3 px-2" />
             </tr>
           </thead>
@@ -89,6 +91,14 @@ export default function ProcessForm({ onRun, onArena, onGenerate, loading }) {
                 <td className="py-2 px-4">
                   <input type="number" value={p.priority} min={0} max={20}
                     onChange={e => update(i, 'priority', +e.target.value)} style={{ width: 72 }} />
+                </td>
+                <td className="py-2 px-4">
+                  <input type="number" value={p.deadline ?? 100} min={1}
+                    onChange={e => update(i, 'deadline', +e.target.value)} style={{ width: 72 }} />
+                </td>
+                <td className="py-2 px-4">
+                  <input type="number" value={p.tickets ?? 10} min={1}
+                    onChange={e => update(i, 'tickets', +e.target.value)} style={{ width: 72 }} />
                 </td>
                 <td className="py-2 px-2">
                   <button className="text-slate-500 hover:text-red-400 transition-colors p-1"

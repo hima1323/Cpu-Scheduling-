@@ -15,6 +15,7 @@ public:
         PCB* p = queue_.front(); queue_.pop_front(); return p;
     }
 
+    double getQuantum(PCB* p) const override { return quantum_; }
     double quantum() const { return quantum_; }
     bool isPreemptive() const override { return true; }
     bool isEmpty() const override { return queue_.empty(); }

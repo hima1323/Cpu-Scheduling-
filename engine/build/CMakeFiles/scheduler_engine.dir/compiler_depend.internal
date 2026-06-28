@@ -1202,11 +1202,15 @@ CMakeFiles/scheduler_engine.dir/src/main.cpp.o
  /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h
  /Users/prince_13/Documents/job  schedler/engine/vendor/httplib.h
  /Users/prince_13/Documents/job  schedler/engine/vendor/json.hpp
+ /Users/prince_13/Documents/job  schedler/engine/src/edf.h
  /Users/prince_13/Documents/job  schedler/engine/src/engine.cpp
  /Users/prince_13/Documents/job  schedler/engine/src/engine.h
  /Users/prince_13/Documents/job  schedler/engine/src/event.h
  /Users/prince_13/Documents/job  schedler/engine/src/fcfs.h
  /Users/prince_13/Documents/job  schedler/engine/src/generators.h
+ /Users/prince_13/Documents/job  schedler/engine/src/lottery.h
+ /Users/prince_13/Documents/job  schedler/engine/src/mlfq.h
+ /Users/prince_13/Documents/job  schedler/engine/src/mlq.h
  /Users/prince_13/Documents/job  schedler/engine/src/pcb.h
  /Users/prince_13/Documents/job  schedler/engine/src/priority.h
  /Users/prince_13/Documents/job  schedler/engine/src/rr.h

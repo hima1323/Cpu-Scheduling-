@@ -16,6 +16,10 @@ export const ALGO_COLORS = {
   SRTF:     '#10b981',
   Priority: '#f59e0b',
   RR:       '#ec4899',
+  MLQ:      '#a855f7',
+  MLFQ:     '#f97316',
+  Lottery:  '#84cc16',
+  EDF:      '#06b6d4',
 };
 
 export const ALGO_LABELS = {
@@ -24,4 +28,8 @@ export const ALGO_LABELS = {
   SRTF:     'Shortest Remaining Time',
   Priority: 'Priority (w/ Aging)',
   RR:       'Round Robin',
+  MLQ:      'Multilevel Queue',
+  MLFQ:     'Multilevel Feedback Queue',
+  Lottery:  'Lottery Scheduling',
+  EDF:      'Earliest Deadline First',
 };
