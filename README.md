@@ -1,136 +1,89 @@
 # SchedSim — CPU Scheduling Benchmarking Suite
 
-A full-stack CPU scheduling simulator: a **C++ discrete-event engine** + **React + Tailwind CSS** visual dashboard.
+A full-stack CPU scheduling simulator that pairs a high-performance **C++ discrete-event engine** with a beautiful **React + Tailwind CSS** visual dashboard. It allows you to simulate, benchmark, and visualize how different operating system scheduling algorithms behave under various workloads.
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
+
+To launch the simulator locally with a single command, run:
 
 ```bash
-# One-command launch (builds engine + starts both services)
+# Builds the C++ engine and starts the React dashboard automatically
 ./start.sh
 ```
 
-- **Dashboard** → http://localhost:5173
+- **Dashboard UI** → http://localhost:5180
 - **Engine API** → http://localhost:8080
 
 ---
 
-## Architecture
+## 🏗️ Architecture Overview
 
-```
-job schedler/
-├── engine/               # C++ simulation engine
-│   ├── src/
-│   │   ├── pcb.h         # Process Control Block
-│   │   ├── event.h       # Event types & priority queue
-│   │   ├── scheduler.h   # Abstract scheduler interface
-│   │   ├── fcfs.h        # First-Come, First-Served
-│   │   ├── sjf.h         # SJF (non-preemptive) + SRTF (preemptive)
-│   │   ├── priority.h    # Priority with anti-starvation aging
-│   │   ├── rr.h          # Round Robin (configurable quantum)
-│   │   ├── engine.h/.cpp # Discrete-event simulation loop
-│   │   ├── generators.h  # Adversarial workload generators
-│   │   └── main.cpp      # HTTP server (cpp-httplib) + entry point
-│   ├── vendor/
-│   │   ├── json.hpp      # nlohmann/json
-│   │   └── httplib.h     # cpp-httplib
-│   └── CMakeLists.txt
-│
-├── dashboard/            # React + Tailwind CSS dashboard
-│   └── src/
-│       ├── App.jsx       # Main app with tabs
-│       ├── components/
-│       │   ├── GanttChart.jsx      # Animated Gantt chart
-│       │   ├── StatsPanel.jsx      # KPI metric cards
-│       │   ├── ProcessForm.jsx     # Process table + controls
-│       │   ├── ArenaView.jsx       # Side-by-side comparison
-│       │   └── QuantumAnalyzer.jsx # RR quantum sweep chart
-│       ├── hooks/useSimulation.js  # API state management hook
-│       └── utils/
-│           ├── api.js    # Engine API client
-│           └── colors.js # Process color palette
-│
-└── start.sh              # One-command launcher
-```
+The system is decoupled into a robust C++ backend (the engine) and a modern React frontend (the dashboard). They communicate via a REST API.
+
+### 1. The C++ Engine (`/engine`)
+The backend is a **discrete-event simulator** built from scratch in C++.
+- **Event Queue:** Time is not advanced linearly via a `sleep()` loop. Instead, the simulation jumps from event to event (e.g., `PROCESS_ARRIVAL`, `BURST_COMPLETE`) using a min-heap priority queue (`std::priority_queue`). This guarantees instantaneous simulation times, even for massive workloads spanning hours of simulated time.
+- **REST Server:** Uses `cpp-httplib` to host a multithreaded HTTP API and `nlohmann/json` for fast serialization of Gantt charts and telemetry.
+- **Schedulers:** Provides 9 distinct algorithms, all deriving from a pure virtual `Scheduler` base class.
+
+### 2. The React Dashboard (`/dashboard`)
+The frontend is a Vite-powered single-page application heavily styled with modern glassmorphism UI patterns via Tailwind CSS.
+- **Gantt Chart Engine:** Dynamically renders processes over time using proportional block widths. Context switches are visually highlighted as striped penalty gaps.
+- **Arena Mode:** A powerful benchmarking view that sends a single workload to all 9 algorithms simultaneously and renders 9 stacked Gantt charts along with a detailed comparison table.
+- **Quantum Analyzer:** An interactive line chart built with Recharts that sweeps through 50 different Round Robin quantum values to mathematically identify the optimal time slice for a specific workload.
 
 ---
 
-## Features by Phase
+## 🧠 Supported Algorithms
 
-### Phase 1–2 — C++ Engine
-- Discrete-event simulation with a `std::priority_queue` min-heap clock
-- **FCFS**, **SJF**, **SRTF** (preemptive), **Priority** (with aging), **Round Robin**
-- Configurable **context switch cost** (advances global clock on each CPU handoff)
-- Priority **aging** every 5 time units to prevent starvation
-- JSON export via `nlohmann/json`
-
-### Phase 3 — Dashboard
-- Dark glassmorphism UI with animated components
-- **Gantt Chart**: colored process blocks, context-switch striped gaps, hover tooltips, time axis
-- **Stats Panel**: Avg Wait, Avg Turnaround, CPU Utilization, Context Switches, Total Time
-- Per-process breakdown table
-
-### Phase 4 — Live Networking + Arena Mode
-- `POST /run` — run any single algorithm
-- `POST /arena` — run all 5 algorithms simultaneously, returns array
-- **Arena View**: stacked Gantt charts + comparison table with winner (★) highlighted
-- Vite proxy transparently forwards API calls to engine
-
-### Phase 5 — Generators + Quantum Analyzer
-- **Workload Generators** (`GET /generate?type=...`):
-  - `convoy` — one 40-unit burst + many 2-unit bursts (Convoy Effect demo)
-  - `starvation` — high-priority arrivals starving a low-priority process
-  - `cpu_bound` — large burst distribution (15–40 units)
-  - `io_bound` — small burst distribution (1–6 units)
-  - `random` — mixed random workload
-- **Quantum Sweep** (`GET /sweep_quantum?type=...`) — sweeps q=1..50, returns metric array
-- **Quantum Analyzer** tab with Recharts line chart + optimal quantum highlighted
+1. **FCFS (First-Come, First-Served):** Non-preemptive. Simple queue based on arrival time.
+2. **SJF (Shortest Job First):** Non-preemptive. Always picks the job with the shortest total burst.
+3. **SRTF (Shortest Remaining Time First):** Preemptive SJF. Re-evaluates on every new arrival.
+4. **Priority Scheduling (w/ Aging):** Preemptive. Schedules based on priority level. To prevent starvation, waiting processes age and gain priority every 5 ticks.
+5. **Round Robin (RR):** Preemptive. Rotates through the ready queue, granting each process a maximum time slice (quantum).
+6. **MLQ (Multilevel Queue):** Preemptive. Partitions processes into 3 static queues based on priority (High, Medium, Low). Higher priority queues strictly preempt lower ones.
+7. **MLFQ (Multilevel Feedback Queue):** Preemptive. Processes start in Q0 (RR q=4). If they exhaust their quantum, they demote to Q1 (RR q=8), and eventually Q2 (FCFS).
+8. **Lottery Scheduling:** Preemptive. Proportional-share randomized scheduling. Processes hold tickets; a random ticket is drawn to determine the next process.
+9. **EDF (Earliest Deadline First):** Preemptive. Real-time scheduling algorithm. Processes are scheduled based on their absolute deadline (`arrival + deadline`).
 
 ---
 
-## API Reference
+## 🔌 API Reference
+
+The C++ engine exposes several endpoints for headless usage:
 
 | Method | Endpoint | Body / Params | Description |
 |--------|----------|---------------|-------------|
 | GET | `/health` | — | Liveness check |
 | POST | `/run` | `{processes, algorithm, quantum, context_switch_cost}` | Run one algorithm |
-| POST | `/arena` | `{processes, quantum, context_switch_cost}` | Run all 5 algorithms |
-| GET | `/generate` | `?type=convoy&n=8` | Generate workload |
-| GET | `/sweep_quantum` | `?type=random&n=8` | Sweep RR quantum 1–50 |
+| POST | `/arena` | `{processes, quantum, context_switch_cost}` | Run all 9 algorithms in parallel |
+| GET | `/generate` | `?type=convoy&n=8` | Generate adversarial workloads |
+| GET | `/sweep_quantum` | `?type=random&n=8` | Sweep RR quantum 1–50 for charting |
 
-### Process Object
-```json
-{
-  "pid": 0,
-  "name": "Alpha",
-  "arrival_time": 0.0,
-  "burst_time": 10.0,
-  "priority": 3
-}
-```
-
-### Algorithms
-- `FCFS` — First-Come, First-Served
-- `SJF` — Shortest Job First (non-preemptive)
-- `SRTF` — Shortest Remaining Time First (preemptive)
-- `Priority` — Priority scheduling with aging
-- `RR` — Round Robin (uses `quantum` param)
+### Workload Generators
+You can ask the API to synthesize difficult scenarios via the `/generate` endpoint:
+- `convoy` — Demonstrates the Convoy Effect (one massive CPU-bound process blocking many short I/O-bound processes).
+- `starvation` — A flood of high-priority processes starving a low-priority job.
+- `cpu_bound` — Heavy compute workloads (15–40 units).
+- `io_bound` — Lightweight interactive tasks (1–6 units).
+- `random` — A balanced, mixed workload.
 
 ---
 
-## Building Manually
+## 🛠️ Building Manually
+
+If you don't want to use `start.sh`, you can build and run the services independently:
 
 ```bash
-# Build C++ engine
+# 1. Build & Run the C++ engine
 cd engine
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel
-
-# Run engine
 ./build/scheduler_engine
 
-# Start dashboard (separate terminal)
+# 2. Start the dashboard (in a separate terminal window)
 cd dashboard
 npm install
 npm run dev
@@ -138,5 +91,5 @@ npm run dev
 
 ---
 
-## Phase 6 (Stretch Goal — SMP)
-Multi-core support is stubbed in `EngineConfig::num_cpus`. The `GanttChart` component supports `cpu_id` per Gantt entry and renders separate lanes per CPU. Full work-stealing implementation is the next step.
+## 🔮 Future Roadmap (Phase 6)
+**Multi-Core SMP (Symmetric Multiprocessing)**: Multi-core support is currently stubbed in `EngineConfig::num_cpus`. The `GanttChart` component already supports a `cpu_id` per Gantt entry and can render separate parallel lanes per CPU. Implementing a work-stealing load balancer in the C++ engine is the next major milestone.
