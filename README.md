@@ -7,6 +7,8 @@ A full-stack CPU scheduling simulator that pairs a high-performance **C++ discre
 ### Dashboard Preview
 ![Dashboard Configuration](assets/initial_dashboard.png)
 ![Dashboard Gantt Chart & Stats](assets/final_dashboard.png)
+![Arena Mode Comparison](assets/arena_mode.png)
+![Quantum Analyzer](assets/quantum_analyzer.png)
 
 ---
 ## 🚀 Quick Start
