@@ -12,13 +12,14 @@ function CompareTable({ results }) {
   ];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#2a2a3d] mt-6 animate-fade-in">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto rounded-xl mt-6 animate-fade-in"
+      style={{ border: '1px solid rgba(255,255,255,0.03)' }}>
+      <table className="theme-table">
         <thead>
-          <tr className="border-b border-[#2a2a3d] text-slate-400 text-xs uppercase tracking-wide">
-            <th className="py-3 px-4 text-left">Metric</th>
+          <tr>
+            <th className="text-left">Metric</th>
             {results.map(r => (
-              <th key={r.algorithm} className="py-3 px-4 text-center">
+              <th key={r.algorithm} className="text-center">
                 <span className="algo-tag text-white" style={{ background: ALGO_COLORS[r.algorithm] }}>
                   {r.algorithm}
                 </span>
@@ -31,14 +32,14 @@ function CompareTable({ results }) {
             const vals = results.map(r => r[m.key] ?? 0);
             const best = m.better === 'low' ? Math.min(...vals) : Math.max(...vals);
             return (
-              <tr key={m.key} className="border-b border-[#1a1a28] hover:bg-[#12121a] transition-colors">
-                <td className="py-3 px-4 text-slate-400 text-xs font-medium">{m.label}</td>
+              <tr key={m.key}>
+                <td className="text-zinc-500 text-xs font-medium">{m.label}</td>
                 {results.map((r, i) => {
                   const v    = r[m.key] ?? 0;
                   const win  = Math.abs(v - best) < 0.01;
                   return (
-                    <td key={r.algorithm} className="py-3 px-4 text-center font-mono text-sm"
-                      style={{ color: win ? '#22d3ee' : '#94a3b8', fontWeight: win ? 700 : 400 }}>
+                    <td key={r.algorithm} className="text-center font-mono text-sm"
+                      style={{ color: win ? '#10b981' : '#71717a', fontWeight: win ? 700 : 400 }}>
                       {m.fmt(v)}
                       {win && <span className="ml-1 text-xs">★</span>}
                     </td>
@@ -60,7 +61,7 @@ export default function ArenaView({ results }) {
     <div className="animate-fade-in">
       <div className="flex items-center gap-3 mb-6">
         <h2 className="text-xl font-bold text-white">⚔️ Arena Mode</h2>
-        <span className="text-slate-400 text-sm">All algorithms, same workload</span>
+        <span className="text-zinc-500 text-sm">All algorithms, same workload</span>
       </div>
 
       <CompareTable results={results} />

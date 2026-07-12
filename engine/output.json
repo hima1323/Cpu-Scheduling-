@@ -81,50 +81,60 @@
     {
       "arrival_time": 0.0,
       "burst_time": 10.0,
+      "deadline": 100.0,
       "finish_time": 10.0,
       "name": "Alpha",
       "pid": 0,
       "priority": 0,
+      "tickets": 10,
       "turnaround_time": 10.0,
       "waiting_time": 0.0
     },
     {
       "arrival_time": 2.0,
       "burst_time": 6.0,
+      "deadline": 100.0,
       "finish_time": 16.5,
       "name": "Beta",
       "pid": 1,
       "priority": 0,
+      "tickets": 10,
       "turnaround_time": 14.5,
       "waiting_time": 8.5
     },
     {
       "arrival_time": 4.0,
       "burst_time": 2.0,
+      "deadline": 100.0,
       "finish_time": 19.0,
       "name": "Gamma",
       "pid": 2,
       "priority": 0,
+      "tickets": 10,
       "turnaround_time": 15.0,
       "waiting_time": 13.0
     },
     {
       "arrival_time": 6.0,
       "burst_time": 4.0,
+      "deadline": 100.0,
       "finish_time": 23.5,
       "name": "Delta",
       "pid": 3,
       "priority": 0,
+      "tickets": 10,
       "turnaround_time": 17.5,
       "waiting_time": 13.5
     },
     {
       "arrival_time": 8.0,
       "burst_time": 8.0,
+      "deadline": 100.0,
       "finish_time": 32.0,
       "name": "Epsilon",
       "pid": 4,
       "priority": 0,
+      "tickets": 10,
       "turnaround_time": 24.0,
       "waiting_time": 16.0
     }

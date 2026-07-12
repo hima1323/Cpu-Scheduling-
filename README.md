@@ -4,6 +4,11 @@ A full-stack CPU scheduling simulator that pairs a high-performance **C++ discre
 
 ---
 
+### Dashboard Preview
+![Dashboard Configuration](assets/initial_dashboard.png)
+![Dashboard Gantt Chart & Stats](assets/final_dashboard.png)
+
+---
 ## 🚀 Quick Start
 
 To launch the simulator locally with a single command, run:
